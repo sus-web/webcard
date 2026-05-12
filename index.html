@@ -8,21 +8,48 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Major+Mono+Display&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- boot sequence -->
+  <div id="boot" aria-hidden="true">
+    <div class="boot-frame">
+      <div class="boot-brand">notrealmf.sys</div>
+      <pre id="boot-log"></pre><span id="boot-cursor">▮</span>
+      <div id="boot-hint">[ click / space / esc to skip ]</div>
+    </div>
+  </div>
+
+  <!-- global svg defs (glitch filters) -->
+  <svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+    <defs>
+      <filter id="glitch" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.85" numOctaves="2" seed="3" result="noise">
+          <animate attributeName="seed" values="1;17;33;51;77;3" dur="7s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5"/>
+      </filter>
+      <filter id="glitch-burst" x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04 1.4" numOctaves="3" seed="12" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="22"/>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- background layers -->
   <div class="bg-gradient"></div>
   <div class="bg-aurora"></div>
   <div class="stars"></div>
+  <canvas id="flow"></canvas>
   <div class="scanlines"></div>
   <div class="vignette"></div>
+  <div id="cursor-light"></div>
 
-  <!-- floating symbols, small & sparse -->
+  <!-- floating y2k symbols -->
   <div class="deco d1">✦</div>
-  <div class="deco d2">✧</div>
-  <div class="deco d3">☾</div>
-  <div class="deco d4">✿</div>
-  <div class="deco d5">˚⋆</div>
-  <div class="deco d6">⁺˚</div>
-  <div class="deco d7">✩</div>
+  <div class="deco d2">✿</div>
+  <div class="deco d3">♡</div>
+  <div class="deco d4">❀</div>
+  <div class="deco d5">✧</div>
+  <div class="deco d6">✿</div>
+  <div class="deco d7">★</div>
 
   <!-- top marquee -->
   <div class="marquee marquee-top">
@@ -185,6 +212,13 @@
         ps — this page was hand-written at an ungodly hour, under a lamp that
         flickers sometimes. please be gentle with it.
       </p>
+
+      <!-- classic y2k info strip -->
+      <div class="status-strip">
+        <span><span class="s-label">☽ uptime</span> <code id="uptime">00:00:00</code></span>
+        <span><span class="s-label">♪ now playing</span> <span id="track">— cybergirl // dreamwave</span></span>
+        <span><span class="s-label">✦ visitors</span> <code id="visitors">00013337</code></span>
+      </div>
 
       <!-- footer -->
       <div class="footer-bar">
